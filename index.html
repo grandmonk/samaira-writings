@@ -3,49 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samaira • Archive</title>
+    <title>Samaira • Technical Archive</title>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root { --bg: #f2f1eb; --text-main: #1a1a1a; --text-muted: #8c8c8c; }
-        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
+        :root { --bg: #f4f3ef; --line: rgba(0,0,0,0.15); --text: #1a1a1a; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
         
-        #hero-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; background: radial-gradient(circle at center, #fdfdfb 0%, #f2f1eb 100%); }
-        #globe-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        #hero { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        #canvas-container { position: absolute; width: 100%; height: 100%; z-index: 1; }
 
         /* HUD ELEMENTS */
-        .hud { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); z-index: 5; text-transform: uppercase; letter-spacing: 1px; pointer-events: none; }
-        .top-left { top: 40px; left: 40px; border-left: 1px solid var(--text-muted); padding-left: 10px; }
-        .top-right { top: 40px; right: 40px; text-align: right; }
+        .hud { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; z-index: 5; text-transform: uppercase; letter-spacing: 1px; }
+        .tl { top: 40px; left: 40px; border-left: 1px solid #ccc; padding-left: 10px; }
+        .tr { top: 40px; right: 40px; text-align: right; font-size: 14px; color: #000; }
+        .bc { bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 8px; opacity: 0.5; }
         
-        .hero-title { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); color: var(--text-main); z-index: 10; text-align: center; font-style: italic; pointer-events: none; opacity: 0.9; line-height: 1; }
+        .hero-title { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); z-index: 10; font-style: italic; opacity: 0.9; pointer-events: none; }
 
         /* SATELLITES */
-        .satellite { position: absolute; transform: translate(-50%, -50%); z-index: 20; cursor: pointer; white-space: nowrap; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .article-sat { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #444; display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.7); padding: 6px 14px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .article-sat:hover { color: #000; background: #fff; border-color: #000; transform: translate(-50%, -50%) scale(1.05); }
-        .fruit-sat { font-size: 1.4rem; pointer-events: none; filter: grayscale(0.2); }
+        .sat { position: absolute; transform: translate(-50%, -50%); z-index: 20; cursor: pointer; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 11px; transition: opacity 0.3s, transform 0.2s; display: flex; align-items: center; gap: 6px; }
+        .sat span { color: #777; }
+        .sat:hover { transform: translate(-50%, -50%) scale(1.1); font-weight: 600; color: #000; }
 
-        main { max-width: 740px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 100; }
-        article { padding: 140px 0 80px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
-        h2 { font-family: 'Instrument Serif', serif; font-size: 3.8rem; margin: 0 0 15px 0; font-weight: 400; letter-spacing: -0.02em; }
-        .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 50px; letter-spacing: 1px; }
-        .content p { font-size: 1.3rem; line-height: 1.85; color: #1a1a1a; margin-bottom: 2.2em; font-family: 'Inter', sans-serif; font-weight: 300; }
+        main { max-width: 720px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 100; }
+        article { padding: 150px 0 100px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        h2 { font-family: 'Instrument Serif', serif; font-size: 3.5rem; margin: 0 0 20px; font-weight: 400; }
+        .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #999; margin-bottom: 40px; }
+        .content p { font-size: 1.25rem; line-height: 1.9; color: #333; margin-bottom: 2em; }
+        .comment-box { margin-top: 60px; padding: 40px; background: #fff; border: 1px solid #eee; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <div id="hero-container">
-        <div class="hud top-left">SYSTEM.STATUS: ACTIVE<br>COORDINATE.REF: SAMAIRA_V7</div>
-        <div class="hud top-right">COLLECTED.WORKS<br><span style="font-size: 22px; color: #000; font-weight: 600;">02</span></div>
-        
-        <div id="globe-canvas"></div>
+    <div id="hero">
+        <div class="hud tl">// TRANSLATE . V08<br>FR 0063</div>
+        <div class="hud tr">LANGUAGES SUPPORTED<br><strong>2+</strong></div>
+        <div class="hud bc">HEYGEN — VIDEO TRANSLATE</div>
+        <div id="canvas-container"></div>
         <div class="hero-title">The price of constructed value.</div>
-        <div id="labels-container"></div>
+        <div id="sat-labels"></div>
     </div>
 
     <main>
 
-        <article id="article-0">
+        <article id="art-0">
             <div class="meta">April 22, 2026 // 3 MIN READ</div>
             <h2>Don't Blame the Player, Blame the Deck</h2>
             <div class="content"><p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
@@ -62,18 +63,11 @@ Some players really are just luckier.
 And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
 <p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p></div>
-            <div class="comments-section" style="margin-top: 80px;">
-                <script src="https://utteranc.es/client.js"
-                        repo="grandmonk/samaira-writings"
-                        issue-term="title"
-                        label="reader-feedback"
-                        theme="github-light"
-                        crossorigin="anonymous"
-                        async>
-                </script>
+            <div class="comment-box">
+                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="reader" theme="github-light" crossorigin="anonymous" async></script>
             </div>
         </article>
-        <article id="article-1">
+        <article id="art-1">
             <div class="meta">April 22, 2026 // 4 MIN READ</div>
             <h2>Bananas, Balloons, and the Price of Nothing</h2>
             <div class="content"><p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
@@ -109,108 +103,97 @@ And some players are working within constraints that never get acknowledged beca
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p></div>
-            <div class="comments-section" style="margin-top: 80px;">
-                <script src="https://utteranc.es/client.js"
-                        repo="grandmonk/samaira-writings"
-                        issue-term="title"
-                        label="reader-feedback"
-                        theme="github-light"
-                        crossorigin="anonymous"
-                        async>
-                </script>
+            <div class="comment-box">
+                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="reader" theme="github-light" crossorigin="anonymous" async></script>
             </div>
         </article>
     </main>
-    <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 35;
-        
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.getElementById('globe-canvas').appendChild(renderer.domElement);
 
+    <script>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 1000);
+        camera.position.z = 40;
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // 1. SKETCH-STYLE GLOBE
         const globeGroup = new THREE.Group();
         scene.add(globeGroup);
 
-        // 1. EARTH WITH TOPOGRAPHIC TEXTURE
         const loader = new THREE.TextureLoader();
-        const earthMap = loader.load('https://raw.githubusercontent.com/turban/webgl-earth/master/images/p02_960.png');
+        // High-contrast vector map for the "sketched" look
+        const mapTex = loader.load('https://simplemaps.com/static/img/world.png');
         
         const earth = new THREE.Mesh(
-            new THREE.SphereGeometry(8, 64, 64),
-            new THREE.MeshStandardMaterial({ 
-                map: earthMap,
-                color: #ffffff,
-                roughness: 0.7,
-                metalness: 0.1,
+            new THREE.SphereGeometry(10, 64, 64),
+            new THREE.MeshBasicMaterial({ 
+                map: mapTex, 
+                color: 0xffffff,
                 transparent: true,
-                opacity: 0.95
+                opacity: 0.8
             })
         );
         globeGroup.add(earth);
 
-        // 2. ATMOSPHERIC FRESNEL GLOW
-        const glowGeom = new THREE.SphereGeometry(8.2, 64, 64);
-        const glowMat = new THREE.MeshBasicMaterial({ color: #ffffff, transparent: true, opacity: 0.1, side: THREE.BackSide });
-        globeGroup.add(new THREE.Mesh(glowGeom, glowMat));
+        // Etched Border
+        const outline = new THREE.Mesh(
+            new THREE.SphereGeometry(10.05, 64, 64),
+            new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, transparent: true, opacity: 0.1 })
+        );
+        globeGroup.add(outline);
 
-        // 3. TECHNICAL ORBIT LINES
-        const orbitGroup = new THREE.Group();
-        orbitGroup.rotation.x = 0.5;
-        orbitGroup.rotation.z = -0.2;
-        scene.add(orbitGroup);
+        // 2. CONCENTRIC RINGS (Technical HUD style)
+        const rings = new THREE.Group();
+        rings.rotation.x = 0.3;
+        scene.add(rings);
         
-        const lineMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.05 });
-        [12, 15, 18].forEach(r => {
+        const ringMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.15 });
+        [13, 16, 19, 22].forEach(r => {
             const pts = new THREE.Path().absarc(0, 0, r, 0, Math.PI * 2).getSpacedPoints(128);
-            const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat);
+            const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), ringMat);
             line.rotation.x = Math.PI / 2;
-            orbitGroup.add(line);
+            rings.add(line);
         });
 
-        // LIGHTING
-        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-        const keyLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        keyLight.position.set(5, 10, 7);
-        scene.add(keyLight);
+        // 3. SATELLITE ARTICLES
+        const artData = ["Don't Blame the Player, Blame the Deck", "Bananas, Balloons, and the Price of Nothing"];
+        const fruits = ['🍌', '🍎', '🍉', '🍓', '🍒'];
+        const sats = [];
 
-        // 4. SATELLITE ENGINE
-        const satData = ["Don't Blame the Player, Blame the Deck", "Bananas, Balloons, and the Price of Nothing"];
-        const fruits = ['🍌', '🍎', '🍓', '🍒', '🍉'];
-        const satellites = [];
-
-        satData.forEach((title, i) => {
+        artData.forEach((t, i) => {
             const el = document.createElement('div');
-            el.className = 'satellite article-sat';
-            el.innerHTML = `<span>${fruits[i % fruits.length]}</span> <span>${title}</span>`;
-            el.onclick = () => document.getElementById('article-'+i).scrollIntoView({behavior:'smooth'});
-            document.getElementById('labels-container').appendChild(el);
-            satellites.push({ element: el, r: 12 + (i*3), speed: 0.0012 + (i*0.0002), angle: Math.random() * 6.28 });
+            el.className = 'sat';
+            el.innerHTML = `<span>${fruits[i % fruits.length]}</span> ${t}`;
+            el.onclick = () => document.getElementById('art-'+i).scrollIntoView({behavior:'smooth'});
+            document.getElementById('sat-labels').appendChild(el);
+            sats.push({ el, r: 13 + (i*3), spd: 0.0015 + (i*0.0003), ang: Math.random() * 6 });
         });
 
         function animate() {
             requestAnimationFrame(animate);
-            earth.rotation.y += 0.002;
+            globeGroup.rotation.y += 0.002;
             
-            satellites.forEach(s => {
-                s.angle += s.speed;
-                const pos = new THREE.Vector3(Math.cos(s.angle)*s.r, 0, Math.sin(s.angle)*s.r).applyEuler(orbitGroup.rotation);
-                const screenPos = pos.clone().project(camera);
+            sats.forEach(s => {
+                s.ang += s.spd;
+                const p = new THREE.Vector3(Math.cos(s.ang)*s.r, 0, Math.sin(s.ang)*s.r).applyEuler(rings.rotation);
+                const screen = p.clone().project(camera);
                 
-                s.element.style.left = `${(screenPos.x * 0.5 + 0.5) * window.innerWidth}px`;
-                s.element.style.top = `${(screenPos.y * -0.5 + 0.5) * window.innerHeight}px`;
+                s.el.style.left = `${(screen.x * 0.5 + 0.5) * window.innerWidth}px`;
+                s.el.style.top = `${(screen.y * -0.5 + 0.5) * window.innerHeight}px`;
                 
-                // VITAL IMPROVEMENT: Elements fade out completely when behind the globe
-                s.element.style.opacity = screenPos.z > 0.992 ? 0 : 1;
-                s.element.style.pointerEvents = screenPos.z > 0.992 ? 'none' : 'auto';
+                // CRITICAL DEPTH SORTING: Hide behind earth
+                s.el.style.opacity = screen.z > 0.99 ? 0 : 1;
+                s.el.style.pointerEvents = screen.z > 0.99 ? 'none' : 'auto';
             });
             renderer.render(scene, camera);
         }
         animate();
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = window.innerWidth/window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
