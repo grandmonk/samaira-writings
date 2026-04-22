@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samaira • Technical Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Samaira • Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #f4f3ef; --text: #1a1a1a; }
         body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
         
-        /* HERO SECTION */
         #hero {
             position: relative;
             width: 100vw;
@@ -17,103 +16,108 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            background: radial-gradient(circle, #fff 0%, #f4f3ef 100%);
+            background: #f4f3ef;
         }
 
-        /* STATIC CENTRAL EARTH */
-        .central-earth {
+        /* CENTRAL EARTH - STATIC IMAGE */
+        .earth {
             position: relative;
-            width: 250px;
-            height: 250px;
-            background-color: #fff;
-            background-image: url('https://simplemaps.com/static/img/world.png');
-            background-size: cover;
-            background-position: center;
+            width: 220px;
+            height: 220px;
+            background: #fff url('https://simplemaps.com/static/img/world.png') center/cover;
             border-radius: 50%;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.05);
             border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        /* ORBIT CONTAINER */
+        .orbit-wrap {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 10;
         }
 
-        /* ORBIT SYSTEM */
-        .orbit-path {
+        /* INDIVIDUAL ORBITAL PATHS */
+        .orbit {
             position: absolute;
             top: 50%; left: 50%;
             border: 1px solid rgba(0,0,0,0.05);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            pointer-events: none;
+            animation: spin var(--speed) linear infinite;
         }
 
+        /* THE SATELLITE (Fruit + Text) */
         .satellite {
             position: absolute;
             top: 0; left: 50%;
             transform: translate(-50%, -50%);
+            background: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            background: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(0,0,0,0.1);
             white-space: nowrap;
             cursor: pointer;
-            pointer-events: auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            animation: maintain-upright var(--duration) linear infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* This animation keeps the fruit/text from turning upside down */
+            animation: unspin var(--speed) linear infinite;
         }
 
         .satellite:hover { background: #000; color: #fff; z-index: 100; }
+        .fruit { font-size: 1.4rem; line-height: 1; }
 
-        /* PERMANENT ROTATION ANIMATION */
-        @keyframes rotate-orbit {
+        @keyframes spin {
             from { transform: translate(-50%, -50%) rotate(0deg); }
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        @keyframes maintain-upright {
+        @keyframes unspin {
             from { transform: translate(-50%, -50%) rotate(0deg); }
             to { transform: translate(-50%, -50%) rotate(-360deg); }
         }
 
-        /* HUD ELEMENTS */
-        .hud { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; z-index: 5; text-transform: uppercase; letter-spacing: 1px; }
-        .tl { top: 40px; left: 40px; border-left: 1px solid #ccc; padding-left: 10px; }
-        .tr { top: 40px; right: 40px; text-align: right; font-size: 14px; color: #000; }
-        .hero-title { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-family: 'Instrument Serif', serif; font-size: 2.5rem; z-index: 10; font-style: italic; }
+        /* HUD & TITLE */
+        .hero-title { position: absolute; bottom: 80px; font-family: 'Instrument Serif', serif; font-size: 2.8rem; font-style: italic; text-align: center; width: 100%; }
+        .hud { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; top: 40px; }
+        .tl { left: 40px; border-left: 1px solid #ccc; padding-left: 10px; }
 
-        /* ARTICLES SECTION */
-        main { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-        article { padding: 150px 0 100px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        h2 { font-family: 'Instrument Serif', serif; font-size: 3.5rem; margin: 0 0 20px; font-weight: 400; }
-        .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #999; margin-bottom: 40px; }
-        .content p { font-size: 1.25rem; line-height: 1.9; color: #333; margin-bottom: 2em; }
+        /* CONTENT */
+        main { max-width: 700px; margin: 0 auto; padding: 40px 24px; }
+        article { padding: 100px 0; border-bottom: 1px solid #eee; }
+        h2 { font-family: 'Instrument Serif', serif; font-size: 3.5rem; margin-bottom: 20px; font-weight: 400; }
+        .content p { font-size: 1.2rem; line-height: 1.8; color: #333; margin-bottom: 2em; }
     </style>
 </head>
 <body>
 
     <div id="hero">
-        <div class="hud tl">// ORBITAL_VIEW . V10<br>STABLE_SYSTEM</div>
-        <div class="hud tr">TOTAL_PAYLOADS<br><strong>02</strong></div>
+        <div class="hud tl">// SYSTEM_ACTIVE . V11<br>SATELLITE_ORBIT_SYNC</div>
+        <div class="earth"></div>
         
-        <div class="central-earth"></div>
-
-        
-        <div class="orbit-path" style="width: 450px; height: 450px; animation: rotate-orbit 25s linear infinite;">
-            <div class="satellite" style="--duration: 25s" onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
-                <span>🍌</span> Don't Blame the Player, Blame the Deck
+        <div class="orbit-wrap">
+            
+            <div class="orbit" style="width: 400px; height: 400px; --speed: 20s;">
+                <div class="satellite" style="--speed: 20s;" onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
+                    <span class="fruit">🍌</span>
+                    <span>Don't Blame the Player, Blame the Deck</span>
+                </div>
             </div>
-        </div>
-        
-        <div class="orbit-path" style="width: 570px; height: 570px; animation: rotate-orbit 35s linear infinite;">
-            <div class="satellite" style="--duration: 35s" onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-                <span>🍎</span> Bananas, Balloons, and the Price of Nothing
+            
+            <div class="orbit" style="width: 530px; height: 530px; --speed: 28s;">
+                <div class="satellite" style="--speed: 28s;" onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
+                    <span class="fruit">🍎</span>
+                    <span>Bananas, Balloons, and the Price of Nothing</span>
+                </div>
             </div>
+            
         </div>
-        
 
         <div class="hero-title">The price of constructed value.</div>
     </div>
@@ -121,7 +125,7 @@
     <main>
 
         <article id="art-0">
-            <div class="meta">April 22, 2026 // 3 MIN READ</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: #999; margin-bottom: 30px;">April 22, 2026 // 3 MIN READ</div>
             <h2>Don't Blame the Player, Blame the Deck</h2>
             <div class="content"><p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
 <p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
@@ -137,12 +141,12 @@ Some players really are just luckier.
 And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
 <p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p></div>
-            <div style="margin-top: 60px;">
-                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="reader" theme="github-light" crossorigin="anonymous" async></script>
+            <div style="margin-top: 50px;">
+                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="comments" theme="github-light" crossorigin="anonymous" async></script>
             </div>
         </article>
         <article id="art-1">
-            <div class="meta">April 22, 2026 // 4 MIN READ</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: #999; margin-bottom: 30px;">April 22, 2026 // 4 MIN READ</div>
             <h2>Bananas, Balloons, and the Price of Nothing</h2>
             <div class="content"><p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
@@ -177,8 +181,8 @@ And some players are working within constraints that never get acknowledged beca
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p></div>
-            <div style="margin-top: 60px;">
-                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="reader" theme="github-light" crossorigin="anonymous" async></script>
+            <div style="margin-top: 50px;">
+                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="comments" theme="github-light" crossorigin="anonymous" async></script>
             </div>
         </article>
     </main>
