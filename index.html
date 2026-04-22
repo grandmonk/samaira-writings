@@ -13,7 +13,7 @@
     
     <style>
         :root {
-            --bg: #f3f1ea; 
+            --bg: #f2f1eb; 
             --text-main: #1a1a1a;
             --text-muted: #8c8c8c;
             --accent: #000000;
@@ -29,87 +29,141 @@
             scroll-behavior: smooth;
         }
 
-        /* 3D HERO SECTION UI */
+        /* =========================================
+           3D HERO SECTION (COOL LOBE & HUD)
+           ========================================= */
         #hero-container {
-            position: relative; width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; border-bottom: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         #globe-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 1; pointer-events: none;
-        }
-
-        .hero-title {
-            position: absolute; bottom: 60px; left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 6vw, 5rem);
-            color: var(--text-main); z-index: 10; text-align: center; font-style: italic;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
             pointer-events: none;
         }
 
-        /* Floating Interactive Elements */
-        .floating-article, .floating-fruit {
+        .hud {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+        }
+
+        .top-left { top: 40px; left: 40px; border-left: 1px solid var(--text-muted); padding-left: 8px; }
+        .top-right { top: 40px; right: 40px; text-align: right; }
+        .bottom-center { bottom: 40px; left: 50%; transform: translateX(-50%); letter-spacing: 4px; font-size: 9px; }
+        
+        .hero-title {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            color: var(--text-main);
+            z-index: 10;
+            text-align: center;
+            font-style: italic;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* INTERACTIVE SATELLITES */
+        .floating-article {
             position: absolute;
             transform: translate(-50%, -50%);
             z-index: 20;
-            transition: transform 0.2s, opacity 0.3s;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
-        }
-        
-        .floating-article {
-            font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500;
-            color: #000; background: rgba(255,255,255,0.4);
-            padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.1);
-            backdrop-filter: blur(8px); white-space: nowrap;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #444;
+            border-bottom: 1px solid transparent;
+            padding: 4px;
         }
         
         .floating-article:hover {
-            background: rgba(0,0,0,0.9); color: white; transform: translate(-50%, -50%) scale(1.1);
+            color: #000;
+            border-bottom: 1px solid #000;
+            transform: translate(-50%, -50%) scale(1.1);
         }
 
         .floating-fruit {
-            font-size: 1.5rem; pointer-events: none; /* Fruits are just visual */
-            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.1));
+            position: absolute;
+            font-size: 1.2rem;
+            pointer-events: none;
+            opacity: 0.8;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
-        /* ARTICLES SECTION */
+        /* =========================================
+           ARTICLES SECTION
+           ========================================= */
         main {
-            max-width: 760px; margin: 100px auto 120px; padding: 0 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
         article {
-            padding: 100px 0 60px 0; margin-bottom: 60px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 120px 0 60px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         h2 {
-            font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: 400; line-height: 1.1; margin: 0 0 20px 0;
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            margin: 0 0 15px 0;
+            font-weight: 400;
+            line-height: 1.1;
         }
 
         .meta {
-            display: flex; gap: 12px; color: var(--text-muted);
-            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; margin-bottom: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            text-transform: uppercase;
         }
 
-        .content p { font-size: 1.15rem; line-height: 1.8; color: #333; margin-bottom: 2em; }
-        
-        .comments-section {
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px dashed rgba(0,0,0,0.1);
+        .content p {
+            font-size: 1.25rem;
+            line-height: 1.9;
+            color: #222;
+            margin-bottom: 2em;
         }
-        .comments-title { font-family: 'Instrument Serif', serif; font-size: 2rem; margin-bottom: 20px; }
+
+        .comments-section {
+            margin-top: 50px;
+            border-top: 1px dashed #ccc;
+            padding-top: 40px;
+        }
     </style>
 </head>
 <body>
 
+    <div id="noise"></div>
+
     <div id="hero-container">
+        <div class="hud top-left">// DATA_STREAM . V06<br>TRACKING_ACTIVE</div>
+        <div class="hud top-right">INDEXED_RECORDS<br><span style="font-size: 20px; color: #000;">02</span></div>
+        <div class="hud bottom-center">HEYGEN — VIDEO TRANSLATE</div>
+
         <div id="globe-canvas"></div>
         <div class="hero-title">The price of constructed value.</div>
+        
         <div id="labels-container"></div>
     </div>
 
@@ -117,9 +171,7 @@
 
         <article id="article-0">
             <h2>Don't Blame the Player, Blame the Deck</h2>
-            <div class="meta">
-                <span>April 22, 2026</span> <span>//</span> <span>3 MIN READ</span>
-            </div>
+            <div class="meta">April 22, 2026 // 3 MIN READ</div>
             <div class="content">
                 <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
 <p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
@@ -138,24 +190,20 @@ And some players are working within constraints that never get acknowledged beca
             </div>
             
             <div class="comments-section">
-                <div class="comments-title">Thoughts & Reactions</div>
                 <script src="https://utteranc.es/client.js"
                         repo="grandmonk/samaira-writings"
                         issue-term="title"
-                        label="comments"
+                        label="reactions"
                         theme="github-light"
                         crossorigin="anonymous"
                         async>
-                </script>
                 </script>
             </div>
         </article>
 
         <article id="article-1">
             <h2>Bananas, Balloons, and the Price of Nothing</h2>
-            <div class="meta">
-                <span>April 22, 2026</span> <span>//</span> <span>4 MIN READ</span>
-            </div>
+            <div class="meta">April 22, 2026 // 4 MIN READ</div>
             <div class="content">
                 <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
@@ -193,15 +241,13 @@ And some players are working within constraints that never get acknowledged beca
             </div>
             
             <div class="comments-section">
-                <div class="comments-title">Thoughts & Reactions</div>
                 <script src="https://utteranc.es/client.js"
                         repo="grandmonk/samaira-writings"
                         issue-term="title"
-                        label="comments"
+                        label="reactions"
                         theme="github-light"
                         crossorigin="anonymous"
                         async>
-                </script>
                 </script>
             </div>
         </article>
@@ -209,98 +255,105 @@ And some players are working within constraints that never get acknowledged beca
     </main>
 
     <script>
-        const container = document.getElementById('globe-canvas');
-        const labelsContainer = document.getElementById('labels-container');
-        
-        // Setup Three.js Scene
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 28;
+        camera.position.z = 30;
         
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        container.appendChild(renderer.domElement);
+        document.getElementById('globe-canvas').appendChild(renderer.domElement);
 
-        // 1. The Core Globe
-        const geometry = new THREE.SphereGeometry(6, 64, 64);
-        const material = new THREE.MeshPhysicalMaterial({ color: 0xe6e4df, metalness: 0.1, roughness: 0.6 });
-        const globe = new THREE.Mesh(geometry, material);
-        scene.add(globe);
+        // --- THE "COOL LOBE" SETUP ---
+        const globeGroup = new THREE.Group();
+        scene.add(globeGroup);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-        scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(10, 10, 10);
-        scene.add(directionalLight);
+        // 1. Base Core
+        const baseSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(6, 64, 64),
+            new THREE.MeshPhongMaterial({ 
+                color: 0xffffff, 
+                emissive: 0xd1d1d1,
+                emissiveIntensity: 0.2,
+                shininess: 10
+            })
+        );
+        globeGroup.add(baseSphere);
 
-        // 2. Orbits Container
-        const orbits = new THREE.Group();
-        orbits.rotation.x = 0.3;
-        orbits.rotation.z = -0.15;
-        scene.add(orbits);
+        // 2. Etched Wireframe Overlay
+        const wireSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(6.02, 40, 40),
+            new THREE.MeshBasicMaterial({ 
+                color: 0x000000, 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.05 
+            })
+        );
+        globeGroup.add(wireSphere);
 
-        // 3. Data Injected from Python
-        const articleTitles = ["Don't Blame the Player, Blame the Deck", "Bananas, Balloons, and the Price of Nothing"];
-        const fruits = ['🍌', '🍎', '🍇', '🍉', '🍓', '🍒'];
+        // 3. Technical Gauge Rings
+        const ringGroup = new THREE.Group();
+        scene.add(ringGroup);
+        const ringMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.1 });
+        
+        [8, 10, 12, 14].forEach(radius => {
+            const points = new THREE.Path().absarc(0, 0, radius, 0, Math.PI * 2).getSpacedPoints(128);
+            const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), ringMat);
+            line.rotation.x = Math.PI / 2;
+            ringGroup.add(line);
+        });
+        ringGroup.rotation.x = 0.3;
+        ringGroup.rotation.z = -0.2;
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+        const spot = new THREE.SpotLight(0xffffff, 0.5);
+        spot.position.set(10, 20, 10);
+        scene.add(spot);
+
+        // --- SATELLITES ---
+        const satData = ["Don't Blame the Player, Blame the Deck", "Bananas, Balloons, and the Price of Nothing"];
+        const fruits = ['🍌', '🍎', '🍓', '🍒', '🍉'];
         const satellites = [];
 
-        // Create Article Satellites (Clickable)
-        articleTitles.forEach((title, index) => {
+        // Articles (Clickable)
+        satData.forEach((title, i) => {
             const el = document.createElement('div');
             el.className = 'floating-article';
             el.innerText = title;
-            // When clicked, smoothly scroll to the article!
-            el.onclick = () => document.getElementById('article-' + index).scrollIntoView({behavior: 'smooth'});
-            labelsContainer.appendChild(el);
-            
-            satellites.push({ 
-                element: el, r: 10 + (index * 1.5), speed: 0.001 + (index * 0.0002), angle: Math.random() * Math.PI * 2 
-            });
+            el.onclick = () => document.getElementById('article-' + i).scrollIntoView({behavior:'smooth'});
+            document.getElementById('labels-container').appendChild(el);
+            satellites.push({ element: el, r: 9 + (i*2.5), speed: 0.001 + (i*0.0003), angle: Math.random()*5 });
         });
 
-        // Create Fruit Satellites (Visual Only)
-        fruits.forEach((fruit, index) => {
+        // Fruits (Visual Decoration)
+        fruits.forEach(f => {
             const el = document.createElement('div');
             el.className = 'floating-fruit';
-            el.innerText = fruit;
-            labelsContainer.appendChild(el);
-            
-            satellites.push({ 
-                element: el, r: 7.5 + (Math.random() * 6), speed: 0.003 + (Math.random() * 0.002), angle: Math.random() * Math.PI * 2 
-            });
+            el.innerText = f;
+            document.getElementById('labels-container').appendChild(el);
+            satellites.push({ element: el, r: 7.5 + Math.random()*4, speed: 0.004, angle: Math.random()*6 });
         });
 
-        // Render Loop
         function animate() {
             requestAnimationFrame(animate);
-            globe.rotation.y += 0.001;
-
-            satellites.forEach(sat => {
-                sat.angle += sat.speed;
-                const x = Math.cos(sat.angle) * sat.r;
-                const z = Math.sin(sat.angle) * sat.r;
+            globeGroup.rotation.y += 0.0015;
+            globeGroup.rotation.z += 0.0005;
+            
+            satellites.forEach(s => {
+                s.angle += s.speed;
+                const v = new THREE.Vector3(Math.cos(s.angle)*s.r, 0, Math.sin(s.angle)*s.r)
+                             .applyEuler(ringGroup.rotation)
+                             .project(camera);
                 
-                const vector = new THREE.Vector3(x, 0, z);
-                vector.applyEuler(orbits.rotation);
-                vector.project(camera);
-                
-                const xPos = (vector.x * .5 + .5) * window.innerWidth;
-                const yPos = (vector.y * -.5 + .5) * window.innerHeight;
-                
-                sat.element.style.left = `${xPos}px`;
-                sat.element.style.top = `${yPos}px`;
-                
-                // Fade elements when they go "behind" the earth
-                sat.element.style.opacity = vector.z > 0.99 ? 0 : 1;
-                sat.element.style.pointerEvents = vector.z > 0.99 ? 'none' : 'auto';
+                s.element.style.left = `${(v.x*.5+.5)*window.innerWidth}px`;
+                s.element.style.top = `${(v.y*-.5+.5)*window.innerHeight}px`;
+                s.element.style.opacity = v.z > 0.99 ? 0 : 1;
             });
-
             renderer.render(scene, camera);
         }
-
+        
         animate();
-
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
