@@ -7,186 +7,121 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
-        /* CSS Variables for seamless Light/Dark Mode */
         :root {
-            --bg-color: #fafafa;
-            --surface-color: #ffffff;
-            --text-main: #111827;
-            --text-muted: #6b7280;
+            --bg: #f3f1ea; 
+            --text-main: #1a1a1a;
+            --text-muted: #8c8c8c;
             --accent: #000000;
-            --border-color: #e5e7eb;
-            --nav-blur: rgba(255, 255, 255, 0.8);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #0f1115;
-                --surface-color: #1a1d24;
-                --text-main: #f9fafb;
-                --text-muted: #9ca3af;
-                --accent: #ffffff;
-                --border-color: #2d3748;
-                --nav-blur: rgba(15, 17, 21, 0.8);
-                --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        /* Reset & Base Styles */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Lora', serif; /* Elegant serif for reading */
-            background-color: var(--bg-color);
+            background-color: var(--bg);
             color: var(--text-main);
-            line-height: 1.8;
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            scroll-behavior: smooth;
         }
 
-        /* Glassmorphism Header */
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            background: var(--nav-blur);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-            padding: 20px 0;
-            text-align: center;
-        }
-        nav h1 {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        /* 3D HERO SECTION UI */
+        #hero-container {
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Layout */
-        main {
-            max-width: 720px;
-            margin: 120px auto 80px auto;
-            padding: 0 24px;
+        #globe-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 1; pointer-events: none;
         }
 
-        /* Hero Section */
-        .hero { margin-bottom: 80px; text-align: center; }
-        .hero h2 {
-            font-family: 'Inter', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            line-height: 1.1;
-            margin-bottom: 16px;
-        }
-        .hero p {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .hero-title {
+            position: absolute; bottom: 60px; left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 6vw, 5rem);
+            color: var(--text-main); z-index: 10; text-align: center; font-style: italic;
+            pointer-events: none;
         }
 
-        /* Articles */
-        article {
-            background: var(--surface-color);
-            padding: 48px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 60px;
-            border: 1px solid var(--border-color);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.8s ease forwards;
-        }
-
-        /* Cascading animation delays */
-        article:nth-child(1) { animation-delay: 0.1s; }
-        article:nth-child(2) { animation-delay: 0.3s; }
-        article:nth-child(3) { animation-delay: 0.5s; }
-
-        article h3 {
-            font-family: 'Inter', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.2;
-            margin-bottom: 12px;
-        }
-
-        .meta-data {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
+        /* Floating Interactive Elements */
+        .floating-article, .floating-fruit {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            transition: transform 0.2s, opacity 0.3s;
+            cursor: pointer;
         }
         
-        .meta-data span.dot { font-size: 1.2rem; }
-
-        .content p {
-            font-size: 1.2rem;
-            margin-bottom: 24px;
-            color: var(--text-main);
+        .floating-article {
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500;
+            color: #000; background: rgba(255,255,255,0.4);
+            padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px); white-space: nowrap;
         }
-        .content p:last-child { margin-bottom: 0; }
-
-        /* Animations */
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
+        
+        .floating-article:hover {
+            background: rgba(0,0,0,0.9); color: white; transform: translate(-50%, -50%) scale(1.1);
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
-            .hero h2 { font-size: 2.2rem; }
-            article { padding: 32px 24px; border-radius: 16px; }
-            article h3 { font-size: 1.8rem; }
-            .content p { font-size: 1.1rem; }
+        .floating-fruit {
+            font-size: 1.5rem; pointer-events: none; /* Fruits are just visual */
+            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.1));
         }
+
+        /* ARTICLES SECTION */
+        main {
+            max-width: 760px; margin: 100px auto 120px; padding: 0 20px;
+        }
+
+        article {
+            padding: 100px 0 60px 0; margin-bottom: 60px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 400; line-height: 1.1; margin: 0 0 20px 0;
+        }
+
+        .meta {
+            display: flex; gap: 12px; color: var(--text-muted);
+            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase; margin-bottom: 40px;
+        }
+
+        .content p { font-size: 1.15rem; line-height: 1.8; color: #333; margin-bottom: 2em; }
+        
+        .comments-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+        }
+        .comments-title { font-family: 'Instrument Serif', serif; font-size: 2rem; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <h1>Samaira</h1>
-    </nav>
+    <div id="hero-container">
+        <div id="globe-canvas"></div>
+        <div class="hero-title">The price of constructed value.</div>
+        <div id="labels-container"></div>
+    </div>
 
     <main>
-        <div class="hero">
-            <h2>Essays & Observations</h2>
-            <p>Exploring systems, structures, and the spaces in between.</p>
-        </div>
-        
-        <div class="article-list">
 
-            <article>
-                <h3>1</h3>
-                <div class="meta-data">
-                    <span>April 22, 2026</span>
-                    <span class="dot">•</span>
-                    <span>1 min read</span>
-                </div>
-                <div class="content">
-                    <p>asdasd</p>
-                </div>
-            </article>
-
-            <article>
-                <h3>Don't Blame the Player, Blame the Deck</h3>
-                <div class="meta-data">
-                    <span>April 22, 2026</span>
-                    <span class="dot">•</span>
-                    <span>3 min read</span>
-                </div>
-                <div class="content">
-                    <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
+        <article id="article-0">
+            <h2>Don't Blame the Player, Blame the Deck</h2>
+            <div class="meta">
+                <span>April 22, 2026</span> <span>//</span> <span>3 MIN READ</span>
+            </div>
+            <div class="content">
+                <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
 <p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
 <p>It’s only when the pattern breaks against you that randomness starts to feel structured, like there’s an order you just weren’t let in on.</p>
 <p>If you stay at the table long enough, you start to notice that people aren’t just playing cards, they’re playing different versions of the same game. Some players take risks easily, lose without tightening, and recover without much visible strain. Others don’t have that luxury. They play cautiously, sometimes not because it’s optimal, but because they can’t afford not to. A bad hand for one player is an inconvenience. For another, it changes how every hand plays after it gets played.</p>
@@ -200,18 +135,36 @@ Some players really are just luckier.
 And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
 <p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p>
-                </div>
-            </article>
+            </div>
+            
+            <div class="comments-section">
+                <div class="comments-title">Thoughts & Reactions</div>
+                <script src="https://giscus.app/client.js"
+                        data-repo="grandmonk/samaira-writings"
+                        data-repo-id="PLACEHOLDER_REPO_ID"
+                        data-category="Announcements"
+                        data-category-id="PLACEHOLDER_CATEGORY_ID"
+                        data-mapping="specific"
+                        data-term="Don't Blame the Player, Blame the Deck"
+                        data-strict="0"
+                        data-reactions-enabled="1"
+                        data-emit-metadata="0"
+                        data-input-position="top"
+                        data-theme="light"
+                        data-lang="en"
+                        crossorigin="anonymous"
+                        async>
+                </script>
+            </div>
+        </article>
 
-            <article>
-                <h3>Bananas, Balloons, and the Price of Nothing</h3>
-                <div class="meta-data">
-                    <span>April 22, 2026</span>
-                    <span class="dot">•</span>
-                    <span>4 min read</span>
-                </div>
-                <div class="content">
-                    <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
+        <article id="article-1">
+            <h2>Bananas, Balloons, and the Price of Nothing</h2>
+            <div class="meta">
+                <span>April 22, 2026</span> <span>//</span> <span>4 MIN READ</span>
+            </div>
+            <div class="content">
+                <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
 <p>We understand decay when we can see it.</p>
 <p>We do not understand it nearly as well when it is hidden behind abstraction.</p>
@@ -244,11 +197,129 @@ And some players are working within constraints that never get acknowledged beca
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p>
-                </div>
-            </article>
+            </div>
+            
+            <div class="comments-section">
+                <div class="comments-title">Thoughts & Reactions</div>
+                <script src="https://giscus.app/client.js"
+                        data-repo="grandmonk/samaira-writings"
+                        data-repo-id="PLACEHOLDER_REPO_ID"
+                        data-category="Announcements"
+                        data-category-id="PLACEHOLDER_CATEGORY_ID"
+                        data-mapping="specific"
+                        data-term="Bananas, Balloons, and the Price of Nothing"
+                        data-strict="0"
+                        data-reactions-enabled="1"
+                        data-emit-metadata="0"
+                        data-input-position="top"
+                        data-theme="light"
+                        data-lang="en"
+                        crossorigin="anonymous"
+                        async>
+                </script>
+            </div>
+        </article>
 
-        </div>
     </main>
 
+    <script>
+        const container = document.getElementById('globe-canvas');
+        const labelsContainer = document.getElementById('labels-container');
+        
+        // Setup Three.js Scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 28;
+        
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // 1. The Core Globe
+        const geometry = new THREE.SphereGeometry(6, 64, 64);
+        const material = new THREE.MeshPhysicalMaterial({ color: 0xe6e4df, metalness: 0.1, roughness: 0.6 });
+        const globe = new THREE.Mesh(geometry, material);
+        scene.add(globe);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(10, 10, 10);
+        scene.add(directionalLight);
+
+        // 2. Orbits Container
+        const orbits = new THREE.Group();
+        orbits.rotation.x = 0.3;
+        orbits.rotation.z = -0.15;
+        scene.add(orbits);
+
+        // 3. Data Injected from Python
+        const articleTitles = ["Don't Blame the Player, Blame the Deck", "Bananas, Balloons, and the Price of Nothing"];
+        const fruits = ['🍌', '🍎', '🍇', '🍉', '🍓', '🍒'];
+        const satellites = [];
+
+        // Create Article Satellites (Clickable)
+        articleTitles.forEach((title, index) => {
+            const el = document.createElement('div');
+            el.className = 'floating-article';
+            el.innerText = title;
+            // When clicked, smoothly scroll to the article!
+            el.onclick = () => document.getElementById('article-' + index).scrollIntoView({behavior: 'smooth'});
+            labelsContainer.appendChild(el);
+            
+            satellites.push({ 
+                element: el, r: 10 + (index * 1.5), speed: 0.001 + (index * 0.0002), angle: Math.random() * Math.PI * 2 
+            });
+        });
+
+        // Create Fruit Satellites (Visual Only)
+        fruits.forEach((fruit, index) => {
+            const el = document.createElement('div');
+            el.className = 'floating-fruit';
+            el.innerText = fruit;
+            labelsContainer.appendChild(el);
+            
+            satellites.push({ 
+                element: el, r: 7.5 + (Math.random() * 6), speed: 0.003 + (Math.random() * 0.002), angle: Math.random() * Math.PI * 2 
+            });
+        });
+
+        // Render Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            globe.rotation.y += 0.001;
+
+            satellites.forEach(sat => {
+                sat.angle += sat.speed;
+                const x = Math.cos(sat.angle) * sat.r;
+                const z = Math.sin(sat.angle) * sat.r;
+                
+                const vector = new THREE.Vector3(x, 0, z);
+                vector.applyEuler(orbits.rotation);
+                vector.project(camera);
+                
+                const xPos = (vector.x * .5 + .5) * window.innerWidth;
+                const yPos = (vector.y * -.5 + .5) * window.innerHeight;
+                
+                sat.element.style.left = `${xPos}px`;
+                sat.element.style.top = `${yPos}px`;
+                
+                // Fade elements when they go "behind" the earth
+                sat.element.style.opacity = vector.z > 0.99 ? 0 : 1;
+                sat.element.style.pointerEvents = vector.z > 0.99 ? 'none' : 'auto';
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>
