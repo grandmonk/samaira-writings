@@ -1,123 +1,174 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Orbit Archive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samaira • Orbit Archive</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
+:root {
+    --bg: #f4f3ef;
+    --text: #1a1a1a;
+}
+
 body {
-    margin:0;
-    background:#f4f3ef;
-    font-family: sans-serif;
+    margin: 0;
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
 }
 
+/* HERO */
 #hero {
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
-    overflow: hidden;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* 🌍 EARTH */
+/* 🌍 REAL ROTATING GLOBE */
 .earth {
-    width:200px;
-    height:200px;
-    border-radius:50%;
-    position:relative;
-    overflow:hidden;
-    box-shadow:
-        inset -25px -25px 50px rgba(0,0,0,0.2),
-        inset 15px 15px 30px rgba(255,255,255,0.2);
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
     z-index: 10;
+
+    box-shadow:
+        inset -25px -25px 50px rgba(0,0,0,0.18),
+        inset 15px 15px 30px rgba(255,255,255,0.25),
+        0 20px 60px rgba(0,0,0,0.08);
 }
 
 .earth::before {
-    content:"";
-    position:absolute;
-    width:200%;
-    height:100%;
-    background:url("https://upload.wikimedia.org/wikipedia/commons/8/80/Equirectangular_projection_SW.jpg") repeat-x;
-    background-size:cover;
-    animation:spinEarth 40s linear infinite;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+
+    background: url("https://upload.wikimedia.org/wikipedia/commons/8/80/Equirectangular_projection_SW.jpg");
+    background-size: cover;
+    background-repeat: repeat-x;
+
+    animation: earth-spin 40s linear infinite;
 }
 
-@keyframes spinEarth {
-    from { transform:translateX(0); }
-    to { transform:translateX(-50%); }
+.earth::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(0,0,0,0.25), transparent 70%);
 }
 
-/* ORBITS */
+@keyframes earth-spin {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ORBITS WRAPPER */
 .orbit-wrap {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-}
-
-.orbit {
-    position:absolute;
-    top:50%;
-    left:50%;
-    border-radius:50%;
-    border:1px solid rgba(0,0,0,0.08);
-    transform:translate(-50%,-50%);
-    animation:spin linear infinite;
-}
-
-@keyframes spin {
-    from { transform:translate(-50%,-50%) rotate(0deg); }
-    to { transform:translate(-50%,-50%) rotate(360deg); }
-}
-
-/* SATELLITES */
-.sat-positioner {
     position: absolute;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+/* ORBIT RINGS */
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.06);
+    transform: translate(-50%, -50%);
+    animation: spin linear infinite;
+}
+
+/* SATELLITES */
 .satellite {
-    background:white;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-    display:flex;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 999px;
+    padding: 6px 14px;
+    display: flex;
     align-items: center;
-    gap:8px;
-    cursor:pointer;
-    white-space: nowrap; /* Prevents long titles from wrapping */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    /* The counter-spin keeps the text upright while the parent orbit spins */
-    animation: counterSpin linear infinite;
-    transition: transform 0.2s, background 0.2s, color 0.2s;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+    animation: unspin linear infinite;
 }
 
 .satellite:hover {
-    background:black;
-    color:white;
-    transform: scale(1.05);
-}
-
-@keyframes counterSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
+    background: black;
+    color: white;
+    transform: translate(-50%, -50%) scale(1.08);
 }
 
 .fruit {
-    font-size:1.3rem;
+    font-size: 1.2rem;
 }
 
+/* ANIMATIONS */
+@keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes unspin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+/* TITLE */
+.hero-title {
+    position: absolute;
+    bottom: 70px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.6rem;
+    font-style: italic;
+}
+
+/* CONTENT */
 main {
-    max-width:700px;
-    margin:auto;
-    padding:40px;
+    max-width: 720px;
+    margin: auto;
+    padding: 40px 20px;
 }
 
 article {
-    margin:80px 0;
+    padding: 100px 0;
+    border-bottom: 1px solid #eee;
+}
+
+h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1.6em;
+    color: #333;
 }
 </style>
 </head>
@@ -125,35 +176,56 @@ article {
 <body>
 
 <div id="hero">
-    <div class="earth"></div>
-    <div class="orbit-wrap">
+
+<div class="earth"></div>
+
+<div class="orbit-wrap">
+
+<div class="orbit" style="
+    width:380px;
+    height:380px;
+    animation-duration:18s;
+">
+    <div class="satellite"
+        style="animation-duration:18s;"
+        onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
         
-        <div class="orbit" style="width:295px;height:295px;animation-duration:116s;">
-            <div class="sat-positioner" style="transform: translate(-50%, -50%) rotate(105deg) translateY(-147.5px) rotate(-105deg);">
-                <div class="satellite" style="animation-duration:116s;" onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
-                    <span class="fruit">🥭</span>
-                    <span class="title">Don't Blame the Player, Blame the Deck</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="orbit" style="width:388px;height:388px;animation-duration:109s;">
-            <div class="sat-positioner" style="transform: translate(-50%, -50%) rotate(217deg) translateY(-194.0px) rotate(-217deg);">
-                <div class="satellite" style="animation-duration:109s;" onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-                    <span class="fruit">🍋</span>
-                    <span class="title">Bananas, Balloons, and the Price of Nothing</span>
-                </div>
-            </div>
-        </div>
-        
+        <span class="fruit">🍌</span>
+        <span>Don't Blame the Player, Blame the Deck</span>
     </div>
+</div>
+
+<div class="orbit" style="
+    width:500px;
+    height:500px;
+    animation-duration:24s;
+">
+    <div class="satellite"
+        style="animation-duration:24s;"
+        onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
+        
+        <span class="fruit">🍎</span>
+        <span>Bananas, Balloons, and the Price of Nothing</span>
+    </div>
+</div>
+
+</div>
+
+<div class="hero-title">The price of constructed value.</div>
+
 </div>
 
 <main>
 
 <article id="art-0">
-<h2>Don't Blame the Player, Blame the Deck</h2>
-<p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
+    <div style="font-family: JetBrains Mono; font-size: 10px; color:#999;">
+        April 22, 2026 • 3 MIN READ
+    </div>
+
+    <h2>Don't Blame the Player, Blame the Deck</h2>
+
+    <div class="content">
+        <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
 <p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
 <p>It’s only when the pattern breaks against you that randomness starts to feel structured, like there’s an order you just weren’t let in on.</p>
 <p>If you stay at the table long enough, you start to notice that people aren’t just playing cards, they’re playing different versions of the same game. Some players take risks easily, lose without tightening, and recover without much visible strain. Others don’t have that luxury. They play cautiously, sometimes not because it’s optimal, but because they can’t afford not to. A bad hand for one player is an inconvenience. For another, it changes how every hand plays after it gets played.</p>
@@ -167,11 +239,28 @@ Some players really are just luckier.
 And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
 <p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p>
+    </div>
+
+    <div style="margin-top:50px;">
+        <script src="https://utteranc.es/client.js"
+            repo="grandmonk/samaira-writings"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+        </script>
+    </div>
 </article>
 
 <article id="art-1">
-<h2>Bananas, Balloons, and the Price of Nothing</h2>
-<p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
+    <div style="font-family: JetBrains Mono; font-size: 10px; color:#999;">
+        April 22, 2026 • 4 MIN READ
+    </div>
+
+    <h2>Bananas, Balloons, and the Price of Nothing</h2>
+
+    <div class="content">
+        <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
 <p>We understand decay when we can see it.</p>
 <p>We do not understand it nearly as well when it is hidden behind abstraction.</p>
@@ -204,5 +293,19 @@ And some players are working within constraints that never get acknowledged beca
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p>
+    </div>
+
+    <div style="margin-top:50px;">
+        <script src="https://utteranc.es/client.js"
+            repo="grandmonk/samaira-writings"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+        </script>
+    </div>
 </article>
-</main></body></html>
+
+</main>
+</body>
+</html>
