@@ -1,133 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samaira • Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #f4f3ef; --text: #1a1a1a; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
-        
-        #hero {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f4f3ef;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samaira • Orbit Archive</title>
 
-        /* CENTRAL EARTH - STATIC IMAGE */
-        .earth {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            background: #fff url('https://simplemaps.com/static/img/world.png') center/cover;
-            border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            z-index: 5;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-        /* ORBIT CONTAINER */
-        .orbit-wrap {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
+<style>
+:root {
+    --bg: #f4f3ef;
+    --text: #1a1a1a;
+}
 
-        /* INDIVIDUAL ORBITAL PATHS */
-        .orbit {
-            position: absolute;
-            top: 50%; left: 50%;
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: spin var(--speed) linear infinite;
-        }
+body {
+    margin: 0;
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+}
 
-        /* THE SATELLITE (Fruit + Text) */
-        .satellite {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            border: 1px solid rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            white-space: nowrap;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            /* This animation keeps the fruit/text from turning upside down */
-            animation: unspin var(--speed) linear infinite;
-        }
+/* HERO */
+#hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .satellite:hover { background: #000; color: #fff; z-index: 100; }
-        .fruit { font-size: 1.4rem; line-height: 1; }
+/* 🌍 GLOBE */
+.earth {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: url('https://simplemaps.com/static/img/world.png') center/cover;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    z-index: 10;
+}
 
-        @keyframes spin {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
+/* ORBITS WRAPPER */
+.orbit-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
-        @keyframes unspin {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
+/* ORBIT RINGS */
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.06);
+    transform: translate(-50%, -50%);
+    animation: spin linear infinite;
+}
 
-        /* HUD & TITLE */
-        .hero-title { position: absolute; bottom: 80px; font-family: 'Instrument Serif', serif; font-size: 2.8rem; font-style: italic; text-align: center; width: 100%; }
-        .hud { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; top: 40px; }
-        .tl { left: 40px; border-left: 1px solid #ccc; padding-left: 10px; }
+/* SATELLITES */
+.satellite {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 999px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+    animation: unspin linear infinite;
+}
 
-        /* CONTENT */
-        main { max-width: 700px; margin: 0 auto; padding: 40px 24px; }
-        article { padding: 100px 0; border-bottom: 1px solid #eee; }
-        h2 { font-family: 'Instrument Serif', serif; font-size: 3.5rem; margin-bottom: 20px; font-weight: 400; }
-        .content p { font-size: 1.2rem; line-height: 1.8; color: #333; margin-bottom: 2em; }
-    </style>
+.satellite:hover {
+    background: black;
+    color: white;
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.fruit {
+    font-size: 1.2rem;
+}
+
+/* ANIMATIONS */
+@keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes unspin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+/* TITLE */
+.hero-title {
+    position: absolute;
+    bottom: 70px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.6rem;
+    font-style: italic;
+}
+
+/* CONTENT */
+main {
+    max-width: 720px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+article {
+    padding: 100px 0;
+    border-bottom: 1px solid #eee;
+}
+
+h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1.6em;
+    color: #333;
+}
+</style>
 </head>
+
 <body>
 
-    <div id="hero">
-        <div class="hud tl">// SYSTEM_ACTIVE . V11<br>SATELLITE_ORBIT_SYNC</div>
-        <div class="earth"></div>
-        
-        <div class="orbit-wrap">
-            
-            <div class="orbit" style="width: 400px; height: 400px; --speed: 20s;">
-                <div class="satellite" style="--speed: 20s;" onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
-                    <span class="fruit">🍌</span>
-                    <span>Don't Blame the Player, Blame the Deck</span>
-                </div>
-            </div>
-            
-            <div class="orbit" style="width: 530px; height: 530px; --speed: 28s;">
-                <div class="satellite" style="--speed: 28s;" onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-                    <span class="fruit">🍎</span>
-                    <span>Bananas, Balloons, and the Price of Nothing</span>
-                </div>
-            </div>
-            
-        </div>
+<div id="hero">
 
-        <div class="hero-title">The price of constructed value.</div>
+<div class="earth"></div>
+
+<div class="orbit-wrap">
+
+<div class="orbit" style="
+    width:380px;
+    height:380px;
+    animation-duration:18s;
+">
+    <div class="satellite"
+        style="animation-duration:18s;"
+        onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
+        
+        <span class="fruit">🍌</span>
+        <span>Don't Blame the Player, Blame the Deck</span>
+    </div>
+</div>
+
+<div class="orbit" style="
+    width:500px;
+    height:500px;
+    animation-duration:24s;
+">
+    <div class="satellite"
+        style="animation-duration:24s;"
+        onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
+        
+        <span class="fruit">🍎</span>
+        <span>Bananas, Balloons, and the Price of Nothing</span>
+    </div>
+</div>
+
+</div>
+
+<div class="hero-title">The price of constructed value.</div>
+
+</div>
+
+<main>
+
+<article id="art-0">
+    <div style="font-family: JetBrains Mono; font-size: 10px; color:#999;">
+        April 22, 2026 • 3 MIN READ
     </div>
 
-    <main>
+    <h2>Don't Blame the Player, Blame the Deck</h2>
 
-        <article id="art-0">
-            <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: #999; margin-bottom: 30px;">April 22, 2026 // 3 MIN READ</div>
-            <h2>Don't Blame the Player, Blame the Deck</h2>
-            <div class="content"><p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
+    <div class="content">
+        <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
 <p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
 <p>It’s only when the pattern breaks against you that randomness starts to feel structured, like there’s an order you just weren’t let in on.</p>
 <p>If you stay at the table long enough, you start to notice that people aren’t just playing cards, they’re playing different versions of the same game. Some players take risks easily, lose without tightening, and recover without much visible strain. Others don’t have that luxury. They play cautiously, sometimes not because it’s optimal, but because they can’t afford not to. A bad hand for one player is an inconvenience. For another, it changes how every hand plays after it gets played.</p>
@@ -140,15 +202,29 @@
 Some players really are just luckier.
 And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
-<p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p></div>
-            <div style="margin-top: 50px;">
-                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="comments" theme="github-light" crossorigin="anonymous" async></script>
-            </div>
-        </article>
-        <article id="art-1">
-            <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: #999; margin-bottom: 30px;">April 22, 2026 // 4 MIN READ</div>
-            <h2>Bananas, Balloons, and the Price of Nothing</h2>
-            <div class="content"><p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
+<p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p>
+    </div>
+
+    <div style="margin-top:50px;">
+        <script src="https://utteranc.es/client.js"
+            repo="grandmonk/samaira-writings"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+        </script>
+    </div>
+</article>
+
+<article id="art-1">
+    <div style="font-family: JetBrains Mono; font-size: 10px; color:#999;">
+        April 22, 2026 • 4 MIN READ
+    </div>
+
+    <h2>Bananas, Balloons, and the Price of Nothing</h2>
+
+    <div class="content">
+        <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
 <p>We understand decay when we can see it.</p>
 <p>We do not understand it nearly as well when it is hidden behind abstraction.</p>
@@ -180,11 +256,20 @@ And some players are working within constraints that never get acknowledged beca
 <p>The balloon will always drift upward.</p>
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
-<p>Meaning it can be changed.</p></div>
-            <div style="margin-top: 50px;">
-                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="comments" theme="github-light" crossorigin="anonymous" async></script>
-            </div>
-        </article>
-    </main>
+<p>Meaning it can be changed.</p>
+    </div>
+
+    <div style="margin-top:50px;">
+        <script src="https://utteranc.es/client.js"
+            repo="grandmonk/samaira-writings"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+        </script>
+    </div>
+</article>
+
+</main>
 </body>
 </html>
