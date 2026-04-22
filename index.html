@@ -5,26 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samaira • Technical Archive</title>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@100..800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root { --bg: #f4f3ef; --text: #1a1a1a; }
         body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
         
-        #hero { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        #canvas-container { position: absolute; width: 100%; height: 100%; z-index: 1; }
+        /* HERO SECTION */
+        #hero {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: radial-gradient(circle, #fff 0%, #f4f3ef 100%);
+        }
+
+        /* STATIC CENTRAL EARTH */
+        .central-earth {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            background-color: #fff;
+            background-image: url('https://simplemaps.com/static/img/world.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        /* ORBIT SYSTEM */
+        .orbit-path {
+            position: absolute;
+            top: 50%; left: 50%;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .satellite {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.1);
+            white-space: nowrap;
+            cursor: pointer;
+            pointer-events: auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            animation: maintain-upright var(--duration) linear infinite;
+        }
+
+        .satellite:hover { background: #000; color: #fff; z-index: 100; }
+
+        /* PERMANENT ROTATION ANIMATION */
+        @keyframes rotate-orbit {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes maintain-upright {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(-360deg); }
+        }
 
         /* HUD ELEMENTS */
         .hud { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; z-index: 5; text-transform: uppercase; letter-spacing: 1px; }
         .tl { top: 40px; left: 40px; border-left: 1px solid #ccc; padding-left: 10px; }
         .tr { top: 40px; right: 40px; text-align: right; font-size: 14px; color: #000; }
-        
-        .hero-title { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3.5rem); z-index: 10; font-style: italic; opacity: 0.8; pointer-events: none; }
+        .hero-title { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-family: 'Instrument Serif', serif; font-size: 2.5rem; z-index: 10; font-style: italic; }
 
-        /* SATELLITES */
-        .sat { position: absolute; transform: translate(-50%, -50%); z-index: 20; cursor: pointer; white-space: nowrap; font-family: 'JetBrains Mono', monospace; font-size: 10px; display: flex; align-items: center; gap: 8px; background: rgba(244, 243, 239, 0.6); padding: 4px 8px; border-radius: 4px; backdrop-filter: blur(2px); }
-        .sat:hover { color: #000; background: #fff; z-index: 30; }
-
-        main { max-width: 720px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 100; }
+        /* ARTICLES SECTION */
+        main { max-width: 720px; margin: 0 auto; padding: 0 24px; }
         article { padding: 150px 0 100px; border-bottom: 1px solid rgba(0,0,0,0.05); }
         h2 { font-family: 'Instrument Serif', serif; font-size: 3.5rem; margin: 0 0 20px; font-weight: 400; }
         .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #999; margin-bottom: 40px; }
@@ -32,12 +94,28 @@
     </style>
 </head>
 <body>
+
     <div id="hero">
-        <div class="hud tl">// ORBITAL_VIEW . V09<br>SYSTEM_READY</div>
-        <div class="hud tr">RECORDS_FOUND<br><strong>02</strong></div>
-        <div id="canvas-container"></div>
+        <div class="hud tl">// ORBITAL_VIEW . V10<br>STABLE_SYSTEM</div>
+        <div class="hud tr">TOTAL_PAYLOADS<br><strong>02</strong></div>
+        
+        <div class="central-earth"></div>
+
+        
+        <div class="orbit-path" style="width: 450px; height: 450px; animation: rotate-orbit 25s linear infinite;">
+            <div class="satellite" style="--duration: 25s" onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
+                <span>🍌</span> Don't Blame the Player, Blame the Deck
+            </div>
+        </div>
+        
+        <div class="orbit-path" style="width: 570px; height: 570px; animation: rotate-orbit 35s linear infinite;">
+            <div class="satellite" style="--duration: 35s" onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
+                <span>🍎</span> Bananas, Balloons, and the Price of Nothing
+            </div>
+        </div>
+        
+
         <div class="hero-title">The price of constructed value.</div>
-        <div id="sat-labels"></div>
     </div>
 
     <main>
@@ -59,6 +137,9 @@ Some players really are just luckier.
 And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
 <p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p></div>
+            <div style="margin-top: 60px;">
+                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="reader" theme="github-light" crossorigin="anonymous" async></script>
+            </div>
         </article>
         <article id="art-1">
             <div class="meta">April 22, 2026 // 4 MIN READ</div>
@@ -96,76 +177,10 @@ And some players are working within constraints that never get acknowledged beca
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p></div>
+            <div style="margin-top: 60px;">
+                <script src="https://utteranc.es/client.js" repo="grandmonk/samaira-writings" issue-term="title" label="reader" theme="github-light" crossorigin="anonymous" async></script>
+            </div>
         </article>
     </main>
-
-    <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 1000);
-        camera.position.z = 40;
-        
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-        // GLOBE WITH MAP
-        const globeGroup = new THREE.Group();
-        scene.add(globeGroup);
-
-        const loader = new THREE.TextureLoader();
-        const earthMap = loader.load('https://simplemaps.com/static/img/world.png');
-        
-        const earth = new THREE.Mesh(
-            new THREE.SphereGeometry(10, 64, 64),
-            new THREE.MeshBasicMaterial({ map: earthMap, color: 0xffffff, transparent: true, opacity: 0.9 })
-        );
-        globeGroup.add(earth);
-
-        // Technical Rings
-        const rings = new THREE.Group();
-        rings.rotation.x = 0.4;
-        scene.add(rings);
-        const ringMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.1 });
-        [13, 16, 19].forEach(r => {
-            const pts = new THREE.Path().absarc(0, 0, r, 0, Math.PI * 2).getSpacedPoints(100);
-            const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), ringMat);
-            line.rotation.x = Math.PI / 2;
-            rings.add(line);
-        });
-
-        // SATELLITES (Articles + Fruits)
-        const artData = ["Don't Blame the Player, Blame the Deck", "Bananas, Balloons, and the Price of Nothing"];
-        const fruits = ['🍌', '🍎', '🍉', '🍓', '🍒'];
-        const sats = [];
-
-        artData.forEach((t, i) => {
-            const el = document.createElement('div');
-            el.className = 'sat';
-            el.innerHTML = `<span>${fruits[i % fruits.length]}</span> ${t}`;
-            el.onclick = () => document.getElementById('art-'+i).scrollIntoView({behavior:'smooth'});
-            document.getElementById('sat-labels').appendChild(el);
-            sats.push({ el, r: 13 + (i*3), spd: 0.002, ang: Math.random() * 6 });
-        });
-
-        function animate() {
-            requestAnimationFrame(animate);
-            earth.rotation.y += 0.003;
-            
-            sats.forEach(s => {
-                s.ang += s.spd;
-                const p = new THREE.Vector3(Math.cos(s.ang)*s.r, 0, Math.sin(s.ang)*s.r).applyEuler(rings.rotation);
-                const screen = p.clone().project(camera);
-                
-                s.el.style.left = `${(screen.x * 0.5 + 0.5) * window.innerWidth}px`;
-                s.el.style.top = `${(screen.y * -0.5 + 0.5) * window.innerHeight}px`;
-                
-                // Fixed Depth Sorting: Hide when screen.z > 0.99
-                s.el.style.opacity = screen.z > 0.99 ? 0 : 1;
-                s.el.style.pointerEvents = screen.z > 0.99 ? 'none' : 'auto';
-            });
-            renderer.render(scene, camera);
-        }
-        animate();
-    </script>
 </body>
 </html>
