@@ -3,32 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samaira's Writings</title>
+    <title>Samaira • Essays</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --bg: #f7f9fc; --card-bg: #ffffff; --text-main: #2d3748; --text-light: #718096; --accent: #1a202c; }
-        body { font-family: 'Georgia', serif; line-height: 1.8; color: var(--text-main); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 20px; }
-        header { text-align: center; padding: 60px 0 40px 0; }
-        h1 { font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--accent); font-size: 2.8em; margin: 0; font-weight: 800; letter-spacing: -1px; }
-        .subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--text-light); font-size: 1.1em; margin-top: 10px; }
-        article { background: var(--card-bg); padding: 50px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; }
-        h2 { font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--accent); margin-top: 0; font-size: 2em; line-height: 1.3; margin-bottom: 15px;}
-        .date { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9em; color: var(--text-light); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 30px; font-weight: 600; }
-        p { margin-bottom: 24px; font-size: 1.15em; }
-        p:last-child { margin-bottom: 0; }
-        @media (max-width: 600px) { article { padding: 30px; } }
+        /* CSS Variables for seamless Light/Dark Mode */
+        :root {
+            --bg-color: #fafafa;
+            --surface-color: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --accent: #000000;
+            --border-color: #e5e7eb;
+            --nav-blur: rgba(255, 255, 255, 0.8);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f1115;
+                --surface-color: #1a1d24;
+                --text-main: #f9fafb;
+                --text-muted: #9ca3af;
+                --accent: #ffffff;
+                --border-color: #2d3748;
+                --nav-blur: rgba(15, 17, 21, 0.8);
+                --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        /* Reset & Base Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Lora', serif; /* Elegant serif for reading */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Glassmorphism Header */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            background: var(--nav-blur);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 20px 0;
+            text-align: center;
+        }
+        nav h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Layout */
+        main {
+            max-width: 720px;
+            margin: 120px auto 80px auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero { margin-bottom: 80px; text-align: center; }
+        .hero h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .hero p {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Articles */
+        article {
+            background: var(--surface-color);
+            padding: 48px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 60px;
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        /* Cascading animation delays */
+        article:nth-child(1) { animation-delay: 0.1s; }
+        article:nth-child(2) { animation-delay: 0.3s; }
+        article:nth-child(3) { animation-delay: 0.5s; }
+
+        article h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .meta-data {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        
+        .meta-data span.dot { font-size: 1.2rem; }
+
+        .content p {
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+        .content p:last-child { margin-bottom: 0; }
+
+        /* Animations */
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .hero h2 { font-size: 2.2rem; }
+            article { padding: 32px 24px; border-radius: 16px; }
+            article h3 { font-size: 1.8rem; }
+            .content p { font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Samaira</h1>
-        <div class="subtitle">Thoughts, essays, and observations.</div>
-    </header>
 
-    <article>
-        <h2>Bananas, Balloons, and the Price of Nothing</h2>
-        <div class="date">April 2024</div>
-        <div class="content">
-            <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
+    <nav>
+        <h1>Samaira</h1>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <h2>Essays & Observations</h2>
+            <p>Exploring systems, structures, and the spaces in between.</p>
+        </div>
+        
+        <div class="article-list">
+
+            <article>
+                <h3>Don't Blame the Player, Blame the Deck</h3>
+                <div class="meta-data">
+                    <span>April 22, 2026</span>
+                    <span class="dot">•</span>
+                    <span>3 min read</span>
+                </div>
+                <div class="content">
+                    <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
+<p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
+<p>It’s only when the pattern breaks against you that randomness starts to feel structured, like there’s an order you just weren’t let in on.</p>
+<p>If you stay at the table long enough, you start to notice that people aren’t just playing cards, they’re playing different versions of the same game. Some players take risks easily, lose without tightening, and recover without much visible strain. Others don’t have that luxury. They play cautiously, sometimes not because it’s optimal, but because they can’t afford not to. A bad hand for one player is an inconvenience. For another, it changes how every hand plays after it gets played.</p>
+<p>At some point, without anyone naming it, the game stops being just about cards and starts becoming about position. Not where you’re sitting physically, but where you’re sitting in relation to risk. Some players can absorb loss. Others have to avoid it. And once that difference exists, the meaning of a “fair game” starts to shift. Because if everyone is following the same rules but not everyone is exposed to the same consequences, it’s not clear what fairness is measuring anymore.</p>
+<p>You could argue the game is still fair. The deck is shuffled in the open. The rules don’t change mid-hand. No one is stacking anything. From that perspective, outcomes reflect choices. Some people read the table better. Some people manage risk better. Over time, that’s what separates winning from losing. Blaming the shuffle, then, starts to sound like a refusal to accept that not every loss has something deeper behind it.</p>
+<p>But that explanation starts to feel incomplete when the same players seem to stay ahead without ever really being threatened by the downside. The game may be technically the same, but the incentives aren’t. Risk isn’t symmetrical. And once risk behaves differently for different people, the outcomes begin to reflect more than just skill or chance.</p>
+<p>This is where the analogy stops being about cards, even if no one says it out loud. Because the question underneath it isn’t really about whether the shuffle was fair. It’s about whether a system can be called fair if it produces outcomes that consistently feel out of reach for some of the people inside it. Not in a dramatic, rigged sense, but in a quieter way, where the distribution of wins and losses starts to look less like randomness and more like a pattern you can’t quite prove.</p>
+<p>What makes it complicated is that both interpretations can exist at the same time. The game can be fair in its design and uneven in its experience. The shuffle can be random, and still produce results that don’t feel random depending on where you’re sitting.</p>
+<p>Some players really are better.
+Some players really are just luckier.
+And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
+<p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
+<p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p>
+                </div>
+            </article>
+
+            <article>
+                <h3>Bananas, Balloons, and the Price of Nothing</h3>
+                <div class="meta-data">
+                    <span>April 22, 2026</span>
+                    <span class="dot">•</span>
+                    <span>4 min read</span>
+                </div>
+                <div class="content">
+                    <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
 <p>We understand decay when we can see it.</p>
 <p>We do not understand it nearly as well when it is hidden behind abstraction.</p>
@@ -61,29 +232,11 @@
 <p>The banana will always decay.</p>
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p>
-        </div>
-    </article>
+                </div>
+            </article>
 
-    <article>
-        <h2>Don't Blame the Player, Blame the Deck</h2>
-        <div class="date">April 2024</div>
-        <div class="content">
-            <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
-<p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
-<p>It’s only when the pattern breaks against you that randomness starts to feel structured, like there’s an order you just weren’t let in on.</p>
-<p>If you stay at the table long enough, you start to notice that people aren’t just playing cards, they’re playing different versions of the same game. Some players take risks easily, lose without tightening, and recover without much visible strain. Others don’t have that luxury. They play cautiously, sometimes not because it’s optimal, but because they can’t afford not to. A bad hand for one player is an inconvenience. For another, it changes how every hand plays after it gets played.</p>
-<p>At some point, without anyone naming it, the game stops being just about cards and starts becoming about position. Not where you’re sitting physically, but where you’re sitting in relation to risk. Some players can absorb loss. Others have to avoid it. And once that difference exists, the meaning of a “fair game” starts to shift. Because if everyone is following the same rules but not everyone is exposed to the same consequences, it’s not clear what fairness is measuring anymore.</p>
-<p>You could argue the game is still fair. The deck is shuffled in the open. The rules don’t change mid-hand. No one is stacking anything. From that perspective, outcomes reflect choices. Some people read the table better. Some people manage risk better. Over time, that’s what separates winning from losing. Blaming the shuffle, then, starts to sound like a refusal to accept that not every loss has something deeper behind it.</p>
-<p>But that explanation starts to feel incomplete when the same players seem to stay ahead without ever really being threatened by the downside. The game may be technically the same, but the incentives aren’t. Risk isn’t symmetrical. And once risk behaves differently for different people, the outcomes begin to reflect more than just skill or chance.</p>
-<p>This is where the analogy stops being about cards, even if no one says it out loud. Because the question underneath it isn’t really about whether the shuffle was fair. It’s about whether a system can be called fair if it produces outcomes that consistently feel out of reach for some of the people inside it. Not in a dramatic, rigged sense, but in a quieter way, where the distribution of wins and losses starts to look less like randomness and more like a pattern you can’t quite prove.</p>
-<p>What makes it complicated is that both interpretations can exist at the same time. The game can be fair in its design and uneven in its experience. The shuffle can be random, and still produce results that don’t feel random depending on where you’re sitting.</p>
-<p>Some players really are better.
-Some players really are just luckier.
-And some players are working within constraints that never get acknowledged because they aren’t written into the rules.</p>
-<p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
-<p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p>
         </div>
-    </article>
+    </main>
 
 </body>
 </html>
