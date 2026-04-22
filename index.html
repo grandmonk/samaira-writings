@@ -103,23 +103,32 @@ body {
     transform: translate(-50%, -50%);
     background: white;
     border-radius: 999px;
-    padding: 6px 14px;
     display: flex;
     align-items: center;
     gap: 8px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     white-space: nowrap;
-    cursor: pointer;
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     transition: all 0.2s ease;
     animation: unspin linear infinite;
 }
 
-.satellite:hover {
+.satellite.has-article {
+    padding: 6px 14px;
+    cursor: pointer;
+}
+
+.satellite.has-article:hover {
     background: black;
     color: white;
     transform: translate(-50%, -50%) scale(1.08);
+}
+
+.satellite.empty-orbit {
+    padding: 6px;
+    cursor: default;
+    opacity: 0.5; /* Fades the empty fruits slightly so actual articles stand out */
 }
 
 .fruit {
@@ -176,43 +185,97 @@ h2 {
 <body>
 
 <div id="hero">
-
-<div class="earth"></div>
-
-<div class="orbit-wrap">
-
-<div class="orbit" style="
-    width:380px;
-    height:380px;
-    animation-duration:18s;
-">
-    <div class="satellite"
+    <div class="earth"></div>
+    <div class="orbit-wrap">
+        
+<div class="orbit" style="width:380px; height:380px; animation-duration:18s;">
+    <div class="satellite has-article"
         style="animation-duration:18s;"
         onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
-        
         <span class="fruit">🍌</span>
         <span>Don't Blame the Player, Blame the Deck</span>
     </div>
 </div>
-
-<div class="orbit" style="
-    width:500px;
-    height:500px;
-    animation-duration:24s;
-">
-    <div class="satellite"
+<div class="orbit" style="width:480px; height:480px; animation-duration:24s;">
+    <div class="satellite has-article"
         style="animation-duration:24s;"
         onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-        
         <span class="fruit">🍎</span>
         <span>Bananas, Balloons, and the Price of Nothing</span>
     </div>
 </div>
-
+<div class="orbit" style="width:580px; height:580px; animation-duration:30s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:30s;">
+        <span class="fruit">🍇</span>
+    </div>
 </div>
-
-<div class="hero-title">The price of constructed value.</div>
-
+<div class="orbit" style="width:680px; height:680px; animation-duration:36s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:36s;">
+        <span class="fruit">🍓</span>
+    </div>
+</div>
+<div class="orbit" style="width:780px; height:780px; animation-duration:42s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:42s;">
+        <span class="fruit">🍉</span>
+    </div>
+</div>
+<div class="orbit" style="width:880px; height:880px; animation-duration:48s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:48s;">
+        <span class="fruit">🍒</span>
+    </div>
+</div>
+<div class="orbit" style="width:980px; height:980px; animation-duration:54s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:54s;">
+        <span class="fruit">🍍</span>
+    </div>
+</div>
+<div class="orbit" style="width:1080px; height:1080px; animation-duration:60s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:60s;">
+        <span class="fruit">🥭</span>
+    </div>
+</div>
+<div class="orbit" style="width:1180px; height:1180px; animation-duration:66s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:66s;">
+        <span class="fruit">🍑</span>
+    </div>
+</div>
+<div class="orbit" style="width:1280px; height:1280px; animation-duration:72s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:72s;">
+        <span class="fruit">🍋</span>
+    </div>
+</div>
+<div class="orbit" style="width:1380px; height:1380px; animation-duration:78s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:78s;">
+        <span class="fruit">🍈</span>
+    </div>
+</div>
+<div class="orbit" style="width:1480px; height:1480px; animation-duration:84s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:84s;">
+        <span class="fruit">🍏</span>
+    </div>
+</div>
+<div class="orbit" style="width:1580px; height:1580px; animation-duration:90s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:90s;">
+        <span class="fruit">🍐</span>
+    </div>
+</div>
+<div class="orbit" style="width:1680px; height:1680px; animation-duration:96s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:96s;">
+        <span class="fruit">🥝</span>
+    </div>
+</div>
+<div class="orbit" style="width:1780px; height:1780px; animation-duration:102s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:102s;">
+        <span class="fruit">🥥</span>
+    </div>
+</div>
+<div class="orbit" style="width:1880px; height:1880px; animation-duration:108s; border-color: rgba(0,0,0,0.03);">
+    <div class="satellite empty-orbit" style="animation-duration:108s;">
+        <span class="fruit">🫐</span>
+    </div>
+</div>
+    </div>
+    <div class="hero-title">The price of constructed value.</div>
 </div>
 
 <main>
@@ -221,9 +284,7 @@ h2 {
     <div style="font-family: JetBrains Mono; font-size: 10px; color:#999;">
         April 22, 2026 • 3 MIN READ
     </div>
-
     <h2>Don't Blame the Player, Blame the Deck</h2>
-
     <div class="content">
         <p>During any card game, there is always someone who loses the hand of cards. They looked at what they were holding. Not dramatically, just long enough to replay it. The “almosts” begin to stack: one card away, one decision earlier, one different turn. It doesn’t feel like losing. It feels like something slightly misaligned. And then, eventually, someone says: “Who shuffled!” Not accusing, not really.</p>
 <p>What’s strange isn’t that people lose. It’s how quickly losing turns into a question about the system. No one asks about the shuffle when they’re winning. When the cards fall right, the game feels clean, almost easy. Outcomes make sense. Decisions feel like they matter.</p>
@@ -240,7 +301,6 @@ And some players are working within constraints that never get acknowledged beca
 <p>So when someone asks, “Who shuffled?” it’s not always about the shuffle.</p>
 <p>It becomes harder to tell whether you’re just playing the game, or trying to understand the rules that were there long before you sat down.</p>
     </div>
-
     <div style="margin-top:50px;">
         <script src="https://utteranc.es/client.js"
             repo="grandmonk/samaira-writings"
@@ -256,9 +316,7 @@ And some players are working within constraints that never get acknowledged beca
     <div style="font-family: JetBrains Mono; font-size: 10px; color:#999;">
         April 22, 2026 • 4 MIN READ
     </div>
-
     <h2>Bananas, Balloons, and the Price of Nothing</h2>
-
     <div class="content">
         <p>There is a moment, just before a balloon slips from your hand, when it feels weightless but not yet gone. It hovers, suspended between possession and loss. Not held by force but by the illusion that you still control it. A child watches it drift upward, convinced for a second too long that reaching just a little higher will bring it back.</p>
 <p>Bananas behave differently. They do not float or linger. They brown, soften, collapse inward on themselves. Left alone, they become something else entirely, no longer fruit, but a notion of the passing of time. No one mistakes a rotten banana for anything but what it is: value lost, visibly and undeniably.</p>
@@ -294,7 +352,6 @@ And some players are working within constraints that never get acknowledged beca
 <p>But the price we assign, what we choose to value, protect, or ignore, is not inevitable. It is constructed.</p>
 <p>Meaning it can be changed.</p>
     </div>
-
     <div style="margin-top:50px;">
         <script src="https://utteranc.es/client.js"
             repo="grandmonk/samaira-writings"
