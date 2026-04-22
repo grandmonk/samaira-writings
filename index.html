@@ -18,18 +18,20 @@ body {
     justify-content:center;
     align-items:center;
     position:relative;
+    overflow: hidden;
 }
 
 /* 🌍 EARTH */
 .earth {
-    width:240px;
-    height:240px;
+    width:200px;
+    height:200px;
     border-radius:50%;
     position:relative;
     overflow:hidden;
     box-shadow:
         inset -25px -25px 50px rgba(0,0,0,0.2),
         inset 15px 15px 30px rgba(255,255,255,0.2);
+    z-index: 10;
 }
 
 .earth::before {
@@ -60,7 +62,7 @@ body {
     top:50%;
     left:50%;
     border-radius:50%;
-    border:1px solid rgba(0,0,0,0.1);
+    border:1px solid rgba(0,0,0,0.08);
     transform:translate(-50%,-50%);
     animation:spin linear infinite;
 }
@@ -71,26 +73,41 @@ body {
 }
 
 /* SATELLITES */
+.sat-positioner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
 .satellite {
-    position:absolute;
-    top:50%;
-    left:50%;
     background:white;
-    padding:5px 10px;
+    padding:6px 12px;
     border-radius:20px;
-    font-size:10px;
+    font-size:13px;
     display:flex;
-    gap:5px;
+    align-items: center;
+    gap:8px;
     cursor:pointer;
+    white-space: nowrap; /* Prevents long titles from wrapping */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    /* The counter-spin keeps the text upright while the parent orbit spins */
+    animation: counterSpin linear infinite;
+    transition: transform 0.2s, background 0.2s, color 0.2s;
 }
 
 .satellite:hover {
     background:black;
     color:white;
+    transform: scale(1.05);
+}
+
+@keyframes counterSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
 }
 
 .fruit {
-    font-size:1.2rem;
+    font-size:1.3rem;
 }
 
 main {
@@ -111,47 +128,22 @@ article {
     <div class="earth"></div>
     <div class="orbit-wrap">
         
-        <div class="orbit" style="width:360px;height:360px;animation-duration:18s;">
-            
-            <div class="satellite"
-                 style="transform: rotate(0.0deg) translateY(-180.0px) rotate(-0.0deg);"
-                 onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
-                <span class="fruit">🍎</span>
-                <span>Don't Blame the Player, Blame the Deck</span>
+        <div class="orbit" style="width:295px;height:295px;animation-duration:116s;">
+            <div class="sat-positioner" style="transform: translate(-50%, -50%) rotate(105deg) translateY(-147.5px) rotate(-105deg);">
+                <div class="satellite" style="animation-duration:116s;" onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
+                    <span class="fruit">🥭</span>
+                    <span class="title">Don't Blame the Player, Blame the Deck</span>
+                </div>
             </div>
-            
-            <div class="satellite"
-                 style="transform: rotate(180.0deg) translateY(-180.0px) rotate(-180.0deg);"
-                 onclick="document.getElementById('art-0').scrollIntoView({behavior:'smooth'})">
-                <span class="fruit">🍊</span>
-                <span>Don't Blame the Player, Blame the Deck</span>
-            </div>
-            
         </div>
         
-        <div class="orbit" style="width:470px;height:470px;animation-duration:23s;">
-            
-            <div class="satellite"
-                 style="transform: rotate(0.0deg) translateY(-235.0px) rotate(-0.0deg);"
-                 onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-                <span class="fruit">🍊</span>
-                <span>Bananas, Balloons, and the Price of Nothing</span>
+        <div class="orbit" style="width:388px;height:388px;animation-duration:109s;">
+            <div class="sat-positioner" style="transform: translate(-50%, -50%) rotate(217deg) translateY(-194.0px) rotate(-217deg);">
+                <div class="satellite" style="animation-duration:109s;" onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
+                    <span class="fruit">🍋</span>
+                    <span class="title">Bananas, Balloons, and the Price of Nothing</span>
+                </div>
             </div>
-            
-            <div class="satellite"
-                 style="transform: rotate(120.0deg) translateY(-235.0px) rotate(-120.0deg);"
-                 onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-                <span class="fruit">🍋</span>
-                <span>Bananas, Balloons, and the Price of Nothing</span>
-            </div>
-            
-            <div class="satellite"
-                 style="transform: rotate(240.0deg) translateY(-235.0px) rotate(-240.0deg);"
-                 onclick="document.getElementById('art-1').scrollIntoView({behavior:'smooth'})">
-                <span class="fruit">🍌</span>
-                <span>Bananas, Balloons, and the Price of Nothing</span>
-            </div>
-            
         </div>
         
     </div>
