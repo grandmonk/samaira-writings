@@ -30,14 +30,50 @@ body {
     align-items: center;
 }
 
-/* 🌍 GLOBE */
+/* 🌍 REAL ROTATING GLOBE */
 .earth {
     width: 240px;
     height: 240px;
     border-radius: 50%;
-    background: url('https://simplemaps.com/static/img/world.png') center/cover;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
     z-index: 10;
+
+    box-shadow:
+        inset -25px -25px 50px rgba(0,0,0,0.18),
+        inset 15px 15px 30px rgba(255,255,255,0.25),
+        0 20px 60px rgba(0,0,0,0.08);
+}
+
+.earth::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+
+    background: url("https://upload.wikimedia.org/wikipedia/commons/8/80/Equirectangular_projection_SW.jpg");
+    background-size: cover;
+    background-repeat: repeat-x;
+
+    animation: earth-spin 40s linear infinite;
+}
+
+.earth::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(0,0,0,0.25), transparent 70%);
+}
+
+@keyframes earth-spin {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 
 /* ORBITS WRAPPER */
